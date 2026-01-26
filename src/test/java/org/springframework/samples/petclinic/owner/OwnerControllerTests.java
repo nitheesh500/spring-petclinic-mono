@@ -108,10 +108,7 @@ class OwnerControllerTests {
 			.andExpect(model().attributeExists("owner"))
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
-	@Test
-	void print() throws Exception {
-		print("hi");
-	}
+
 
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
