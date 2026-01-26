@@ -109,7 +109,6 @@ class OwnerControllerTests {
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
-
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 		mockMvc
