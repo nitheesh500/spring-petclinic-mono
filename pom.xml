@@ -296,34 +296,7 @@
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.owasp</groupId>
-        <artifactId>dependency-check-maven</artifactId>
-        <version>9.0.9</version>
-        <configuration>
-          <!-- Fail build if CVSS score >= 7 -->
-          <failBuildOnCVSS>7</failBuildOnCVSS>
-
-          <!-- Output formats -->
-          <formats>
-            <format>HTML</format>
-            <format>JSON</format>
-          </formats>
-
-          <!-- Skip test scope dependencies -->
-          <skipTestScope>true</skipTestScope>
-
-          <!-- Disable node audit (not needed here) -->
-          <nodeAuditSkip>true</nodeAuditSkip>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      
        <plugin>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>

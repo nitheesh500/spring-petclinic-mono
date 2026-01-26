@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/spring-projects/spring-petclinic.git',
+                git url: 'https://github.com/nitheesh500/spring-petclinic-mono.git',
                     branch: 'main'
             }
         }
