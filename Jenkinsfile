@@ -84,7 +84,7 @@ pipeline {
             }
         }
         stage('Package'){
-            step{
+            steps{
                 sh 'mvn clean package -DskipTests'
             }
         }
@@ -104,7 +104,7 @@ pipeline {
 
             steps{
                 sh '''
-                trivy image --severity HIGH,CRITICAL --exit-code 1 $DOCKER_IMAGE:DOCKER_TAG
+                trivy image --severity HIGH,CRITICAL --exit-code 1 $DOCKER_IMAGE:$DOCKER_TAG
                 '''
             }
         }
@@ -113,13 +113,17 @@ pipeline {
             steps{
 
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
-                 usernameVaiable: 'DOCKERHUB_USERNAME',
-                 passswordVariable: 'DOCKERHUB_PASS')]){
+                 usernameVariable: 'DOCKERHUB_USERNAME',
+                 passwordVariable: 'DOCKERHUB_PASSWORD')]){
 
                     sh '''
-                    echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USERNAME --p DOCKERHUB_PASS
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG
-                    docker logout
+                        set +x
+                         echo "$DOCKERHUB_PASSWORD" | docker login \
+                                 -u "$DOCKERHUB_USERNAME" \
+                                   --password-stdin
+                         docker push "$DOCKER_IMAGE:$DOCKER_TAG"
+                        docker logout
+
                     '''
                  }
             }
