@@ -136,5 +136,39 @@ pipeline {
         //         '''
         //     }
         // }
+
+        stage('Update Manifest Repo') {
+            environment {
+                DOCKER_IMAGE = 'naraharinitheesh/petclinic'
+                // DOCKER_TAG   = '10'
+            }
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-creds',
+                    usernameVariable: 'GIT_USER',
+                    passwordVariable: 'GIT_PASS'
+                )]) {
+                    sh '''
+                      set -e
+
+                      rm -rf argocd-helm-cd
+                      git clone https://github.com/nitheesh500/argocd-helm-cd.git
+                      cd argocd-helm-cd
+
+                      git remote set-url origin https://$GIT_USER:$GIT_PASS@github.com/nitheesh500/argocd-helm-cd.git
+
+                      sed -i "s|tag: .*|tag: $DOCKER_TAG|" helm/petclinic/values.yaml
+
+                      git config user.email "naraharinitheesh@gmail.com"
+                      git config user.name $GIT_USER
+
+                      git add helm/petclinic/values.yaml
+                      git commit -m "Update image tag to $DOCKER_TAG" || echo "No changes to commit"
+                      git push origin main
+                    '''
+                }
+            }
+        }
+
     }
 }
